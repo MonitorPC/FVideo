@@ -2,59 +2,51 @@
 
 #### Implementation based on *Pipes&Filters* architecture
 
+This repository demonstrates a simple image processing pipeline using OpenCV in Python. The code showcases how to structure your project to apply a series of filters to a video stream from your webcam.
 
-This project demonstrates the Pipes and Filters architectural pattern for real-time video processing using OpenCV in Python. 
+### Features:
 
-### Project Structure
+- **Modular Design:**  The pipeline is designed using a modular approach, making it easy to add or remove image processing filters.
+- **Pipe and Filter Pattern:**  The code utilizes a pipe and filter pattern for data flow. Each filter receives an image, processes it, and passes it along to the next filter in the pipeline.
+- **Example Filters:** Includes example filters for:
+    - **Red and Blue (RnB):** Removes the green channel from the image, creating a red and blue effect.
+    - **Black and White (BnW):** Converts the image to grayscale.
+    - **Mirror:** Flips the image horizontally.
+    - **Resize:** Resizes the image to a specified width and height.
+- **Window Display:**  Each stage of the pipeline can be displayed in separate OpenCV windows for visualization.
 
-- **`template.py`:** Contains the core classes for the pipeline:
-    - `ImageData`: Represents the image data (original and processed) flowing through the pipeline.
-    - `Pipe`: A pipe that holds `ImageData` and manages data input/output for filters.
-    - `Filter`: Abstract base class for all image processing filters.
-- **`BnW.py`:** Implements a black and white filter.
-- **`mirror.py`:** Implements a horizontal mirror filter.
-- **`resize.py`:** Implements an image resizing filter.
-- **`RnB.py`:** Implements a red and blue color filter.
-- **`main.py`:** The main application that sets up the pipeline and processes video frames.
+### Structure:
 
-### How it Works
+- **`template.py`:** Defines the core classes for the pipeline:
+    - **`ImageData`:** Represents the image data flowing through the pipeline.
+    - **`Pipe`:** Manages the flow of `ImageData` between filters.
+    - **`Window`:**  Provides a way to display the image data in an OpenCV window.
+    - **`Filter`:**  Abstract base class for image processing filters.
+- **`main.py`:**  The main script that initializes the pipeline, reads the video stream, and applies the filters.
+- **`filters/`:**  Contains the implementations of individual image processing filters.
 
-1. **`ImageData`:**  This class encapsulates the image data. It stores:
-   - `image`: The original RGB image.
-   - `cur_image`: The image resulting from the last filter applied.
+### How to Run:
 
-2. **`Pipe`:**  A `Pipe` object acts as a conduit between filters. It holds the current `ImageData` being processed. Filters read input from and write output to the `Pipe`.
+1. **Install OpenCV:**
+   ```bash
+   pip install opencv-python
+   ```
+2. **Run the main script:**
+   ```bash
+   python main.py
+   ```
 
-3. **`Filter`:** All filters inherit from the `Filter` base class. Each filter implements a `process()` method, which:
-   - Gets the current `ImageData` from the pipe.
-   - Processes the `cur_image` within the `ImageData` object.
-   - Puts the modified `ImageData` back into the pipe.
+This will open multiple windows displaying the original video stream and the output after each filter is applied.
 
-4. **`main.py`:**
-   - Sets up the video capture (from webcam or file).
-   - Creates a `Pipe` object.
-   - Instantiates the filters, passing the `Pipe` to each.
-   - Enters a loop:
-     - Reads a frame from the video source.
-     - Creates an `ImageData` object and puts it into the pipe.
-     - Calls the `process()` method of each filter in sequence.
-     - Retrieves the processed `ImageData` from the pipe.
-     - Displays the final processed frame.
+### Adding New Filters:
 
-### How to Run
+1. **Create a new Python file** in the `filters/` directory. 
+2. **Define a class** that inherits from `Filter`.
+3. **Implement the `process()` method** to apply your desired image processing logic.
+4. **Import and instantiate** your new filter in `main.py` to add it to the pipeline.
 
-1. **Install OpenCV:** `pip install opencv-python`
-2. **Run `main.py`:** `python main.py`
+### Future Improvements:
 
-This will start the application and display the processed video stream. Press the `Esc` key to exit.
-
-**Example - Adding a New Filter:**
-
-To add a new filter:
-
-1. Create a new Python file (e.g., `my_filter.py`).
-2. Define a class that inherits from `Filter` (from `template.py`).
-3. Implement the `process()` method to perform your image processing.
-4. Import and instantiate your filter in `main.py`, passing it the `Pipe` object.
-
-This modular structure makes it easy to add, remove, or reorder filters in the video processing pipeline without modifying the core classes. 
+- Implement more advanced image processing filters.
+- Introduce configuration options to enable/disable filters and adjust parameters.
+- Explore parallel processing of filters for improved performance. 
