@@ -25,16 +25,19 @@ if __name__ == "__main__":
 
         # --- Section of pipes and filters ---
 
+        # Show window
         Window(1).show(pipe)
 
         # Create and process the filters
         RnBFilter(pipe).process()
 
+        # Show window
         Window(2).show(pipe)
 
         # Create and process the filters
         MirrorFilter(pipe).process()
 
+        # Show window
         Window('test').show(pipe)
 
         # Create and process the filters
