@@ -15,7 +15,7 @@ if __name__ == "__main__":
 
     pipe = Pipe()
 
-    # Create filters (RnB before BnW to get correct colors)
+    # Create filters 
     rnb_filter = RnBFilter(pipe)
     grayscale_filter = BnWFilter(pipe)
     mirror_filter = MirrorFilter(pipe)
@@ -28,11 +28,17 @@ if __name__ == "__main__":
 
         pipe.put(ImageData(frame, frame))  # Put ImageData into pipeline
         
-        # Filter processing
+        # Filters processing
         rnb_filter.process()
         grayscale_filter.process()
         mirror_filter.process()
         resize_filter.process()
+
+        # Create and process the filters
+        RnBFilter(pipe).process()
+        BnWFilter(pipe).process()
+        RnBFilter(pipe).process()
+        ResizeFilter(pipe, 1000, 1000).process()
 
         final_data = pipe.get()  # Get ImageData from last pipe
         final_frame = final_data.cur_image 
