@@ -1,9 +1,11 @@
+import cv2
+
+
 class ImageData:
     """Represents the data flowing through the pipeline"""
 
-    def __init__(self, image, cur_image):
-        self.image = image  # Always store the original image as RGB
-        self.cur_image = cur_image  # Store the last filtered image
+    def __init__(self, image):
+        self.image = image  # Always store the image as RGB
 
 
 class Pipe:
@@ -19,6 +21,21 @@ class Pipe:
         return self.data
 
 
+class Window:
+    """Represents a window to show the frame"""
+
+    def __init__(self, id):
+        self.id = id
+
+    def show(self, pipe: Pipe):
+        """Show the frame in window"""
+
+        data = pipe.get()
+        frame = data.image
+
+        cv2.imshow(f'Window {self.id}', frame)
+
+
 class Filter:
     """Abstract base class for filters that operate on a single Pipe."""
 
@@ -32,3 +49,6 @@ class Filter:
         # ... perform processing on data.cur_image ...
 
         self.pipe.put(data)  # Write the processed data back to the pipe 
+
+
+    

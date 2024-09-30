@@ -1,9 +1,10 @@
 import cv2
-from template import Pipe, ImageData
-from BnW import BnWFilter
-from mirror import MirrorFilter
-from resize import ResizeFilter
-from RnB import RnBFilter
+from template import Pipe, ImageData, Window
+from filters.BnW import BnWFilter
+from filters.mirror import MirrorFilter
+from filters.resize import ResizeFilter
+from filters.RnB import RnBFilter
+
 
 if __name__ == "__main__":
     video_source = 0  # 0 for webcam, or path to video file
@@ -15,35 +16,31 @@ if __name__ == "__main__":
 
     pipe = Pipe()
 
-    # Create filters 
-    rnb_filter = RnBFilter(pipe)
-    grayscale_filter = BnWFilter(pipe)
-    mirror_filter = MirrorFilter(pipe)
-    resize_filter = ResizeFilter(pipe)
-
     while True:
         ret, frame = cap.read()
         if not ret:
             break
 
-        pipe.put(ImageData(frame, frame))  # Put ImageData into pipeline
-        
-        # Filters processing
-        rnb_filter.process()
-        grayscale_filter.process()
-        mirror_filter.process()
-        resize_filter.process()
+        pipe.put(ImageData(frame))  # Put ImageData into pipeline
+
+        Window(1).show(pipe)
 
         # Create and process the filters
         RnBFilter(pipe).process()
+
+        Window(2).show(pipe)
+
+        # Create and process the filters
+        MirrorFilter(pipe).process()
+
+        Window('test').show(pipe)
+
+        # Create and process the filters
         BnWFilter(pipe).process()
         RnBFilter(pipe).process()
-        ResizeFilter(pipe, 1000, 1000).process()
+        ResizeFilter(pipe, 500, 500).process()
 
-        final_data = pipe.get()  # Get ImageData from last pipe
-        final_frame = final_data.cur_image 
-
-        cv2.imshow('Processed Video', final_frame)
+        Window(3).show(pipe)
 
         c = cv2.waitKey(1)
         if c == 27:  # Press Esc to exit
