@@ -23,6 +23,8 @@ if __name__ == "__main__":
 
         pipe.put(ImageData(frame))  # Put ImageData into pipeline
 
+        # --- Section of pipes and filters ---
+
         Window(1).show(pipe)
 
         # Create and process the filters
@@ -41,6 +43,8 @@ if __name__ == "__main__":
         ResizeFilter(pipe, 500, 500).process()
 
         Window(3).show(pipe)
+
+        # --- End of section ---
 
         c = cv2.waitKey(1)
         if c == 27:  # Press Esc to exit
