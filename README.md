@@ -33,7 +33,7 @@ This repository demonstrates a simple image processing pipeline using OpenCV in 
    ```
 2. **Run the main script:**
    ```bash
-   python main.py
+   python src/main.py
    ```
 
 This will open multiple windows displaying the original video stream and the output after each filter is applied.
